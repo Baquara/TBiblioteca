@@ -30,11 +30,11 @@ public class Exemplar {
 	}
 
 	public Emprestimo getEmprestimo() {
-		return null;
+		return this.emprestimo;
 	}
 
 	public boolean getDisponibilidade() {
-		return false;
+		return this.estaDisponivel;
 	}
 
 	public void setDisponibilidade(boolean estaDisponivel) {

@@ -174,9 +174,41 @@ livro.registerObserver(observador);
 	}
 
 	public String consultarLivro(String codigoLivro) {
-		return null;
+		
+		
+		/*Dado o código de um livro, o sistema deve apresentar suas informações da seguinte
+forma: (i) título, (ii) quantidade de reservas para aquele livro, e, se diferente de zero,
+devem ser também apresentados o nome dos usuários que realizaram cada reserva, (iii)
+para cada exemplar, deve ser apresentado seu código, seu status (disponível ou
+emprestado), e em caso do exemplar estar emprestado deverá ser exibido o nome do
+usuário que realizou o empréstimo, a data de empréstimo e a data prevista para
+devolução. Para solicitar tal consulta, o usuário deverá digitar o comando “liv”, seguido
+do código do livro.
+
+		 * 
+		 */
+		Livro livroencontrado = getLivro(codigoLivro);
+		if(livroencontrado!=null) {
+java.lang.String resultado = livroencontrado.getTitulo() + " " + livroencontrado.quantidadeDeReservas();
+
+if(livroencontrado.quantidadeDeReservas()!=0) {
+	resultado += " " + livroencontrado.NomeDosUsuariosQueFizeramAsReservas();
+	
+	
+}
+resultado+=" " + livroencontrado.caracteristicasdosexemplares();
+
+						
+					}
+
+		return "Livro não encontrado";
 	}
 
+	
+	
+	
+	
+	
 	public String consultarProfessor(String CodigoProfessor) {
 		return null;
 	}

@@ -6,9 +6,9 @@ import java.util.Scanner;
 public class Livro implements Subject {
 	
 	
-    private ArrayList<String> exemplares = new ArrayList();
+    private ArrayList<Exemplar> exemplares = new ArrayList();
     private ArrayList<Reserva> reservas = new ArrayList();
-    private ArrayList<String> observers = new ArrayList();
+    private ArrayList<Observer> observers = new ArrayList();
 
 	private String codigo;
 
@@ -46,11 +46,12 @@ public class Livro implements Subject {
 	}
 
 	public void cadastrarExemplar(String codigo) {
-		this.exemplares.add(codigo);
+		Exemplar exemplar = new Exemplar(codigo);
+		this.exemplares.add(exemplar);
 	}
 
 	public String getTitulo() {
-		return null;
+		return this.getTitulo();
 	}
 
 	public String getCodigo() {
@@ -87,5 +88,65 @@ public class Livro implements Subject {
 		this.reservas.remove(reserva);
 
 	}
+	
+	
+	public boolean getDisponibilidadeDoLivro() {
+for(int i=0;i<this.exemplares.size();i++) {
+				if(this.exemplares.get(i).getDisponibilidade()==true)
+				return true;
+			}
+	return false;
+		
+	}
+	
+	
+	public String getCodigodoExemplarDisponivel() {
+for(int i=0;i<this.exemplares.size();i++) {
+				if(this.exemplares.get(i).getDisponibilidade()==true)
+				return this.exemplares.get(i).getCodigo();
+			}
+	return null;
+		
+	}
+	
+	
+	public int quantidadeDeReservas() {
+	return this.reservas.size();
+				
+			}
+	
+	
+
+	public String NomeDosUsuariosQueFizeramAsReservas() {
+		
+	for(int i=0;i<this.reservas.size();i++) {
+			
+				return this.reservas.get(i).getUsuario().getNome();
+				
+			}
+	return null;
+	}
+	
+	public String caracteristicasdosexemplares() {
+		String caracteristicas="";
+		
+		for(int i=0;i<this.exemplares.size();i++) {
+			if(this.exemplares.get(i).getDisponibilidade()==true) {
+		 caracteristicas+= this.exemplares.get(i).getCodigo() + "Disponível";
+			}
+			else {
+				caracteristicas+= this.exemplares.get(i).getCodigo() + "Emprestado";
+				caracteristicas+= this.exemplares.get(i).getEmprestimo().getUsuario().getNome();
+				caracteristicas+= this.exemplares.get(i).getEmprestimo().getDataDeEmprestimo();
+				caracteristicas+= this.exemplares.get(i).getEmprestimo().getDataDeDevolucao();
+			}
+					
+		}
+		
+	return caracteristicas;	
+	}
+	
+	
+	
 
 }
