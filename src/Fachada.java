@@ -184,7 +184,6 @@ emprestado), e em caso do exemplar estar emprestado deverá ser exibido o nome d
 usuário que realizou o empréstimo, a data de empréstimo e a data prevista para
 devolução. Para solicitar tal consulta, o usuário deverá digitar o comando “liv”, seguido
 do código do livro.
-
 		 * 
 		 */
 		Livro livroencontrado = getLivro(codigoLivro);

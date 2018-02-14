@@ -136,9 +136,9 @@ for(int i=0;i<this.exemplares.size();i++) {
 			}
 			else {
 				caracteristicas+= this.exemplares.get(i).getCodigo() + "Emprestado";
-				caracteristicas+= this.exemplares.get(i).getEmprestimo().getUsuario().getNome();
-				caracteristicas+= this.exemplares.get(i).getEmprestimo().getDataDeEmprestimo();
-				caracteristicas+= this.exemplares.get(i).getEmprestimo().getDataDeDevolucao();
+				caracteristicas+= " " + this.exemplares.get(i).getEmprestimo().getUsuario().getNome();
+				caracteristicas+= " " +this.exemplares.get(i).getEmprestimo().getDataDeEmprestimo();
+				caracteristicas+= " " + this.exemplares.get(i).getEmprestimo().getDataDeDevolucao();
 			}
 					
 		}
