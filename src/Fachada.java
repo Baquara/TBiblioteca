@@ -209,6 +209,19 @@ resultado+=" " + livroencontrado.caracteristicasdosexemplares();
 	
 	
 	public String consultarProfessor(String CodigoProfessor) {
+		/*Dado um professor, o sistema deve retornar a quantidade de vezes que ele foi notificado
+sobre mais de duas reservas simultâneas em livros observados por ele. Para solicitar tal
+consulta, o usuário deverá digitar o comando “ntf”, seguido do código do usuário. Não há
+necessidade de checar se o código se refere realmente a um professor.
+		 * 
+		 */
+		
+		Professor professor = (Professor) getUsuario(CodigoProfessor);
+		
+		
+		return "O professor " + professor.getNome() + "foi notificado" + professor.getNotificacoes() + " vezes";
+		
+		
 		return null;
 	}
 

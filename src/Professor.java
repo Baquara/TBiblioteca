@@ -19,7 +19,7 @@ public class Professor extends Usuario implements Observer {
 	}
 
 	public int getNotificacoes() {
-		return 0;
+		return this.qtdNotificacoes;
 	}
 
 	public void update() {
