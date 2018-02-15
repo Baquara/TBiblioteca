@@ -7,9 +7,9 @@
  */
 public class ComandoConsultarUsuario implements Comando
 {
- public void executar(){
+ public String executar(){
         String usuario = Sistema.get().getEntrada().next();
         
-        Biblioteca.get().usarFacade().consultarUsuario(usuario);
+        return Biblioteca.get().usarFacade().consultarUsuario(usuario);
     }
 }

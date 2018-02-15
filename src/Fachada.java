@@ -19,7 +19,7 @@ public class Fachada {
 	public Usuario getUsuario(String codigo) {
 	for(int i=0;i<this.usuarios.size();i++) {
 			
-			if(this.usuarios.get(i).getCodigo()==codigo) {
+			if(this.usuarios.get(i).getCodigo().equals(codigo)) {
 				return this.usuarios.get(i);
 			}
 			
@@ -30,14 +30,23 @@ public class Fachada {
 
 	public Livro getLivro(String codigo) {
 for(int i=0;i<this.livros.size();i++) {
+
 			
-			if(this.livros.get(i).getCodigo()==codigo) {
+			if(this.livros.get(i).getCodigo().equals(codigo)) {
+				//System.out.println("chegou aqui");
 				return this.livros.get(i);
 			}
 			
 		}
 		
 		return null;
+	}
+	
+	public ArrayList<Livro> RetornaLivros(){
+			
+	return this.livros;
+	
+	
 	}
 
 	public void cadastrarLivro(String codigo, String titulo, String editora, String autores, String edição, String anoDePublicação) {
@@ -90,6 +99,8 @@ livro.registerObserver(observador);
 		Usuario usuarioencontrado = getUsuario(codigoUsuario);
 		Livro livroencontrado = getLivro(codigoLivro);
 		Exemplar exemplar=null;
+		//System.out.println(codigoUsuario + " " + codigoLivro);
+		
 		if(usuarioencontrado!=null) {
 			if(livroencontrado!=null) {
 						
@@ -208,7 +219,7 @@ do código do livro.
 		 */
 		Livro livroencontrado = getLivro(codigoLivro);
 		if(livroencontrado!=null) {
-			int quantidadeReservas=livroencontrado.getReservas(codigoLivro).size();
+			int quantidadeReservas=livroencontrado.getReservas().size();
 			
 			
 java.lang.String resultado = livroencontrado.getTitulo() + " " + quantidadeReservas;
@@ -236,7 +247,8 @@ resultado+=" " + caracteristicas;
 
 						
 					}
-
+//System.out.println(resultado);
+return resultado;
 			}
 		return "Livro não encontrado";
 	}

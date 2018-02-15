@@ -48,7 +48,7 @@ public class Sistema
         System.out.println("Digite o comando:");
         
         String comando = entrada.next();
-        comandos.get(comando).executar();
+        System.out.println(comandos.get(comando).executar());
        
     }
     

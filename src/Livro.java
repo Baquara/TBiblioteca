@@ -52,7 +52,7 @@ public class Livro implements Subject {
 		return this.codigo;
 	}
 		
-	public ArrayList<Reserva> getReservas(String codigo) {
+	public ArrayList<Reserva> getReservas() {
 		return this.reservas;
 	}
 	

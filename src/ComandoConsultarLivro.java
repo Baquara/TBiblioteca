@@ -1,9 +1,9 @@
 
 public class ComandoConsultarLivro  implements Comando
 {
- public void executar(){
+ public String executar(){
         String livro = Sistema.get().getEntrada().next();
         
-        Biblioteca.get().usarFacade().consultarLivro(livro);
+        return Biblioteca.get().usarFacade().consultarLivro(livro);
     }
 }

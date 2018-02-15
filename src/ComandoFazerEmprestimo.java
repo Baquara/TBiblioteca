@@ -1,9 +1,11 @@
 public class ComandoFazerEmprestimo implements Comando
 {
-    public void executar(){
+    public String executar(){
         String usuario = Sistema.get().getEntrada().next();
         String  livro = Sistema.get().getEntrada().next();
         
-        Biblioteca.get().usarFacade().realizarEmprestimo(usuario, livro);
+        
+        
+        return  Biblioteca.get().usarFacade().realizarEmprestimo(usuario, livro);
     }
 }
