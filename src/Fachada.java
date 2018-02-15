@@ -192,11 +192,22 @@ livro.registerObserver(observador);
 
 	public java.lang.String consultarUsuario(String codigoUsuario) {
 		Usuario usuarioencontrado = getUsuario(codigoUsuario);
+		
 		if(usuarioencontrado!=null) {
+			
 
+				String reservastring="";
+
+			for(int i=0;i< usuarioencontrado.getReservas().size();i++) {
+					
+						reservastring+= usuarioencontrado.getReservas().get(i).getNome() + " ";
+					
+					
+				}
+			
 							java.lang.String resultado = usuarioencontrado.getNome() + " " 
 							+ usuarioencontrado.getCodigo() +" "+ usuarioencontrado.getEmprestimosCorrentes() + 
-							" " + usuarioencontrado.getEmprestimosPassados() + " " + usuarioencontrado.getReservasString() + " " + usuarioencontrado.estaDevedor();
+							" " + usuarioencontrado.getEmprestimosPassados() + " " + reservastring + " " + usuarioencontrado.estaDevedor();
 							return resultado;
 						
 					}

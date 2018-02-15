@@ -12,7 +12,6 @@ public abstract class Usuario {
 	private String nome;
 	private RegraEmprestimo regra;
 
-
 	public Usuario(String codigo, String nome, RegraEmprestimo regra) {
 		this.codigo=codigo;
 		this.nome=nome;
@@ -75,17 +74,6 @@ public abstract class Usuario {
 		return reservas;
 	}
 	
-	public String getReservasString() {
-		String reservastring="";
-		
-	for(int i=0;i<this.reservas.size();i++) {
-			
-				reservastring+= this.reservas.get(i).getNome() + " ";
-			
-			
-		}
-	return reservastring;
-	}
 
 	public boolean podeEmprestar() {
 		return false;
