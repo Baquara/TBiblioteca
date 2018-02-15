@@ -2,20 +2,20 @@ public class Professor extends Usuario implements Observer {
 
 	private static int tempoDeEmprestimo = 7;
 
-	private static int limideDeEmprestimos = 0;
+	private static int limiteDeEmprestimos = 0;
 
 	private int qtdNotificacoes = 0;
 
 	public Professor(String codigo, String nome) {
-    super(codigo,nome,new Regra1());
+		super(codigo,nome,new Regra1());
 	}
 
-	public static int getTempoDeEmprestimo() {
-		return 0;
+	public int getTempoDeEmprestimo() {
+		return Professor.tempoDeEmprestimo;
 	}
 
-	public static int getLimiteDeEmprestimos() {
-		return 0;
+	public int getLimiteDeEmprestimos() {
+		return Professor.limiteDeEmprestimos;
 	}
 
 	public int getNotificacoes() {

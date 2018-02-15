@@ -1,16 +1,18 @@
+import java.util.Date;
+import java.util.Calendar;
+
 public class Reserva {
 
 	private Usuario usuario;
-
 	private Livro livro;
-
-	private String dataDeRealizacao;
+	private Date dataDeRealizacao;
+	private Calendar calendario;
 	
-	public void Reserva(Usuario usuario, Livro livro) {
-		
+	public Reserva(Usuario usuario, Livro livro) {
+		calendario = Calendar.getInstance();
+		this.dataDeRealizacao=calendario.getTime();
 		this.usuario=usuario;
 		this.livro=livro;
-
 	}
 
 	public Usuario getUsuario() {
@@ -21,13 +23,8 @@ public class Reserva {
 		return this.livro;
 	}
 	
-	
-	public String GetNome() {
-		
+	public String getNome() {
 		return this.livro.getTitulo();
-		
-		
-		
 	}
-
+	
 }

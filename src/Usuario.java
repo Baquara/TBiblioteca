@@ -1,110 +1,90 @@
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
 public abstract class Usuario {
 	
-    private ArrayList<Emprestimo> emprestimosCorrentes = new ArrayList();
-    private ArrayList<Emprestimo> emprestimosPassados = new ArrayList();
-    private ArrayList<Reserva> reservas = new ArrayList();
-
+    private ArrayList<Emprestimo> emprestimosCorrentes = new ArrayList<Emprestimo>();
+    private ArrayList<Emprestimo> emprestimosPassados = new ArrayList<Emprestimo>();
+    private ArrayList<Reserva> reservas = new ArrayList<Reserva>();
 	private String codigo;
-
 	private String nome;
-	
-	private Date dataatual = new Date();
-
-	private RegraEmprestimo regras;
-
-	private RegraEmprestimo regraEmprestimo;
+	private RegraEmprestimo regra;
 
 
-	public Usuario(String codigo, String nome, RegraEmprestimo regras) {
-this.codigo=codigo;
-this.nome=nome;
-this.regras=regras;
-		
-		
-		
+	public Usuario(String codigo, String nome, RegraEmprestimo regra) {
+		this.codigo=codigo;
+		this.nome=nome;
+		this.regra=regra;
 	}
 
 	public boolean estaDevedor() {
-		
+		ZoneId zoneId = ZoneId.of( "America/Montreal" );
+		ZonedDateTime now = ZonedDateTime.now( zoneId );
+		java.util.Date utilDate = java.util.Date.from ( now.toInstant() ) ;
 		
 		for(int i=0;i<this.emprestimosCorrentes.size();i++) {
-			
-			if(this.emprestimosCorrentes.get(i).getDataDeDevolucao().before(this.dataatual)) {
-				
-				
-			}
-			
+			if(this.emprestimosCorrentes.get(i).getDataDeDevolucao().before(utilDate)) {
+					return true;
+			}			
 		}
-		
 		return false;
 	}
 
 	public void realizarEmprestimo(Exemplar exemplar) {
-		//Usuario usuario= new Usuario(this.codigo,this.nome,this.regras);
-		Emprestimo emprestimo= exemplar.getEmprestimo();
-		this.emprestimosCorrentes.add(emprestimo);
+		Emprestimo novoEmprestimo= new Emprestimo(this,exemplar);
+		this.emprestimosCorrentes.add(novoEmprestimo);
+		exemplar.cadastrarEmprestimo(novoEmprestimo);
 	}
 
 	public void realizarDevolucao(Emprestimo emprestimo) {
-		
 		Exemplar exemplar = emprestimo.getExemplar();
-		
-		exemplar.setDisponibilidade(true);
-		
-	for(int i=0;i<this.emprestimosCorrentes.size();i++) {
+		exemplar.realizarDevolucao();
+		/*for(int i=0;i<this.emprestimosCorrentes.size();i++) {
 			
 			if(this.emprestimosCorrentes.get(i).getExemplar()==exemplar) {
 				this.emprestimosCorrentes.remove(i);
 				break;
-			}
-			
-		}
+			}*/
+		emprestimo.realizarDevolucao();
+		this.emprestimosCorrentes.remove(emprestimo);
+		this.emprestimosPassados.add(emprestimo);
+	}
 	
-		
-		
+	public void realizarReserva(Livro livro) {
+		Reserva novaReserva = new Reserva(this, livro);
+		reservas.add(novaReserva);
+		livro.cadastrarReserva(novaReserva);
 	}
 
-	public Reserva realizarReserva(Livro livro) {
-		return null;
-	}
-
-	public void excluirReserva(Reserva reserva) {
-		
+	public void excluirReserva(Reserva reserva) {	
 		this.reservas.remove(reserva);
-
+		reserva.getLivro().excluirReserva(reserva);
 	}
 
-	public ArrayList getEmprestimosCorrentes() {
-		return null;
+	public ArrayList<Emprestimo> getEmprestimosCorrentes() {
+		return this.emprestimosCorrentes;
 	}
 
-	public ArrayList getEmprestimosPassados() {
-		return null;
+	public ArrayList<Emprestimo> getEmprestimosPassados() {
+		return this.emprestimosPassados;
 	}
 
-	public Reserva getReservas(String codigo) {
-	for(int i=0;i<this.reservas.size();i++) {
-			
-			if(this.reservas.get(i).getLivro().getCodigo()==codigo) {
-				return this.reservas.get(i);
-			}
-			
-		}
-	return null;
+	public ArrayList<Reserva> getReservas() {
+		return reservas;
 	}
 	
 	public String getReservasString() {
+		String reservastring="";
+		
 	for(int i=0;i<this.reservas.size();i++) {
 			
-			if(this.reservas.get(i).getLivro().getCodigo()==codigo) {
-				return this.reservas.get(i).GetNome();
-			}
+				reservastring+= this.reservas.get(i).getNome() + " ";
+			
 			
 		}
-	return null;
+	return reservastring;
 	}
 
 	public boolean podeEmprestar() {
@@ -116,11 +96,15 @@ this.regras=regras;
 	}
 
 	public String getCodigo() {
-		return null;
+		return this.codigo;
 	}
 
 	public String getNome() {
-		return null;
+		return this.nome;
 	}
+	public abstract int getTempoDeEmprestimo();
+	public abstract int getLimiteDeEmprestimos();
+
+	
 
 }

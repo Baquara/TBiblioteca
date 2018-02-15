@@ -96,7 +96,13 @@ livro.registerObserver(observador);
 							//fazer tentativa de emprestimo
 							//DESCOMENTAR QUANDO SOLUCIONAR - if(exemplar.getDisponibilidade()==true)
 							//DESCOMENTAR QUANDO SOLUCIONAR -usuarioencontrado.realizarEmprestimo(livroencontrado);
-							Reserva reserva = usuarioencontrado.getReservas(codigoLivro);
+							ArrayList<Reserva> reservas = usuarioencontrado.getReservas();
+							Reserva reserva=null;
+							for(int i=0;i<reservas.size();i++) {
+								if(reservas.get(i).getUsuario()==usuarioencontrado && reservas.get(i).getLivro()==livroencontrado)
+								reserva=reservas.get(i);
+								
+							};
 							if(reserva!=null) {
 							usuarioencontrado.excluirReserva(reserva);
 							livroencontrado.excluirReserva(reserva);
@@ -221,8 +227,7 @@ necessidade de checar se o código se refere realmente a um professor.
 		
 		return "O professor " + professor.getNome() + "foi notificado" + professor.getNotificacoes() + " vezes";
 		
-		
-		return null;
+
 	}
 
 

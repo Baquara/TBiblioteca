@@ -8,12 +8,12 @@ public class Funcionario extends Usuario {
 		super(codigo,nome,new Regra2());
 	}
 
-	public static int getTempoDeEmprestimo() {
-		return 0;
+	public int getTempoDeEmprestimo() {
+		return Funcionario.tempoDeEmprestimo;
 	}
 
-	public static int getLimiteDeEmprestimos() {
-		return 0;
+	public int getLimiteDeEmprestimos() {
+		return Funcionario.limiteDeEmprestimos;
 	}
 
 }
