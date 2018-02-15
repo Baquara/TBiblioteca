@@ -89,13 +89,22 @@ livro.registerObserver(observador);
 	public java.lang.String realizarEmprestimo(String codigoUsuario, String codigoLivro) {
 		Usuario usuarioencontrado = getUsuario(codigoUsuario);
 		Livro livroencontrado = getLivro(codigoLivro);
+		Exemplar exemplar=null;
 		if(usuarioencontrado!=null) {
 			if(livroencontrado!=null) {
 						
 						if(usuarioencontrado.podeEmprestar()==true) {
-							//fazer tentativa de emprestimo
-							//DESCOMENTAR QUANDO SOLUCIONAR - if(exemplar.getDisponibilidade()==true)
-							//DESCOMENTAR QUANDO SOLUCIONAR -usuarioencontrado.realizarEmprestimo(livroencontrado);
+							
+							
+							for(int i=0;i<livroencontrado.getExemplares().size();i++) {
+						if(livroencontrado.getExemplares().get(i).getDisponibilidade()==true) {
+							 exemplar = livroencontrado.getExemplares().get(i);
+						break;
+						}
+							}
+								
+							if(exemplar.getDisponibilidade()==true)
+							usuarioencontrado.realizarEmprestimo(exemplar);
 							ArrayList<Reserva> reservas = usuarioencontrado.getReservas();
 							Reserva reserva=null;
 							for(int i=0;i<reservas.size();i++) {
@@ -122,24 +131,29 @@ livro.registerObserver(observador);
 	public java.lang.String realizarDevolucao(String codigoUsuario, String codigoLivro) {
 		Usuario usuarioencontrado = getUsuario(codigoUsuario);
 		Livro livroencontrado = getLivro(codigoLivro);
+		Emprestimo emprestimo = null;
 		if(usuarioencontrado!=null) {
 			if(livroencontrado!=null) {
-				/* DESCOMENTAR QUANDO ENCONTRAR SOLUÇÃO
-						if(usuarioencontrado.getEmprestimosCorrentes()==livroencontrado){
-							//fazer devolucao de emprestimo
-							Emprestimo emprestimo = usuarioencontrado.getEmprestimosCorrentes();
-							usuarioencontrado.realizarDevolucao(emprestimo);
-*/
-							}
+				for(int i=0;i<usuarioencontrado.getEmprestimosCorrentes().size();i++) {
+					if(usuarioencontrado.getEmprestimosCorrentes().get(i).getExemplar().getLivro()==livroencontrado)
+					{
+						emprestimo=usuarioencontrado.getEmprestimosCorrentes().get(i);
+						usuarioencontrado.realizarDevolucao(emprestimo);
+						break;
+					}
+					
+					
+				}
+						
 							return "Devolucao realizada com sucesso";
 						}
-		/*	}
-	 DESCOMENTAR QUANDO ENCONTRAR SOLUÇÃO else {
+}
+ else {
 				
 				return "Livro não encontrado";
 				
 			}
-	*/
+
 		return "Usuario não encontrado";
 	}
 
@@ -194,18 +208,36 @@ do código do livro.
 		 */
 		Livro livroencontrado = getLivro(codigoLivro);
 		if(livroencontrado!=null) {
-java.lang.String resultado = livroencontrado.getTitulo() + " " + livroencontrado.quantidadeDeReservas();
+			int quantidadeReservas=livroencontrado.getReservas(codigoLivro).size();
+			
+			
+java.lang.String resultado = livroencontrado.getTitulo() + " " + quantidadeReservas;
 
-if(livroencontrado.quantidadeDeReservas()!=0) {
-	resultado += " " + livroencontrado.NomeDosUsuariosQueFizeramAsReservas();
+if(quantidadeReservas!=0) {
+
+		String caracteristicas="";
+		
+		for(int i=0;i<livroencontrado.getExemplares().size();i++) {
+			if(livroencontrado.getExemplares().get(i).getDisponibilidade()==true) {
+		 caracteristicas+= livroencontrado.getExemplares().get(i).getCodigo() + "Disponível";
+			}
+			else {
+				caracteristicas+= livroencontrado.getExemplares().get(i).getCodigo() + "Emprestado";
+				caracteristicas+= livroencontrado.getExemplares().get(i).getEmprestimo().getUsuario().getNome() +" ";
+				caracteristicas+= livroencontrado.getExemplares().get(i).getEmprestimo().getDataDeEmprestimo() + " ";
+				caracteristicas+= livroencontrado.getExemplares().get(i).getEmprestimo().getDataDeDevolucao() + " ";
+			}
+					
+		}
 	
 	
-}
-resultado+=" " + livroencontrado.caracteristicasdosexemplares();
+	
+resultado+=" " + caracteristicas;
 
 						
 					}
 
+			}
 		return "Livro não encontrado";
 	}
 
@@ -229,6 +261,8 @@ necessidade de checar se o código se refere realmente a um professor.
 		
 
 	}
+	
+
 
 
 

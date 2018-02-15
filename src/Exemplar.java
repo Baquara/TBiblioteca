@@ -38,6 +38,11 @@ public class Exemplar {
 		this.estaDisponivel=estaDisponivel;
 
 	}
+	
+	public Livro getLivro() {
+		return this.livro;
+		
+	}
 
 	public void excluirEmprestimo() {
 

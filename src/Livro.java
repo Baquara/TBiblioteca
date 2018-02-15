@@ -53,19 +53,13 @@ public class Livro implements Subject {
 	}
 		
 	public ArrayList<Reserva> getReservas(String codigo) {
-		return reservas;
+		return this.reservas;
 	}
 	
-	/*public Reserva getReservas(String codigo) {
-	for(int i=0;i<this.reservas.size();i++) {
-			
-			if(this.reservas.get(i).getLivro().getCodigo()==codigo) {
-				return this.reservas.get(i);
-			}
-			
-		}
-	return null;
-	}*/
+	
+	public ArrayList<Exemplar> getExemplares() {
+		return this.exemplares;
+	}
 
 	public void cadastrarReserva(Reserva reserva) {
 		this.reservas.add(reserva);
@@ -78,63 +72,6 @@ public class Livro implements Subject {
 		this.reservas.remove(reserva);
 	}
 	
-	public boolean getDisponibilidadeDoLivro() {
-		for(int i=0;i<this.exemplares.size();i++) {
-						if(this.exemplares.get(i).getDisponibilidade()==true)
-						return true;
-					}
-			return false;
-				
-			}
-	
-	
 
-	public String NomeDosUsuariosQueFizeramAsReservas() {
-		
-	for(int i=0;i<this.reservas.size();i++) {
-			
-				return this.reservas.get(i).getUsuario().getNome();
-				
-			}
-	return null;
-	}
-			
-			
-			public String getCodigodoExemplarDisponivel() {
-		for(int i=0;i<this.exemplares.size();i++) {
-						if(this.exemplares.get(i).getDisponibilidade()==true)
-						return this.exemplares.get(i).getCodigo();
-					}
-			return null;
-				
-			}
-			
-			
-			public int quantidadeDeReservas() {
-			return this.reservas.size();
-						
-					}
-
-
-
-
-public String caracteristicasdosexemplares() {
-	String caracteristicas="";
-	
-	for(int i=0;i<this.exemplares.size();i++) {
-		if(this.exemplares.get(i).getDisponibilidade()==true) {
-	 caracteristicas+= this.exemplares.get(i).getCodigo() + "Disponível";
-		}
-		else {
-			caracteristicas+= this.exemplares.get(i).getCodigo() + "Emprestado";
-			caracteristicas+= this.exemplares.get(i).getEmprestimo().getUsuario().getNome();
-			caracteristicas+= this.exemplares.get(i).getEmprestimo().getDataDeEmprestimo();
-			caracteristicas+= this.exemplares.get(i).getEmprestimo().getDataDeDevolucao();
-		}
-				
-	}
-	
-return caracteristicas;	
-}
 
 }
