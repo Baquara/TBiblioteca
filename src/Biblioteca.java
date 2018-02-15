@@ -1,42 +1,68 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Biblioteca {
 
-	
-
-	   private ArrayList<Livro> livros = new ArrayList();
-	    private ArrayList<Usuario> usuarios = new ArrayList();
-	
-
 	private Fachada fachada = new Fachada();
-
 	private Comando[] commando;
-
 	private ParametrosCommand[] parametrosCommand;
-	
-	private static Biblioteca instancia = null;
+	private static Biblioteca instancia = null;   
+    private HashMap<String, Comando> comandos;
+    private Scanner entrada;
+
 
 
 	public static void main(String[] args) {
+		/** O construtor deve preencher o HashMap com os comandos correpondentes **/	     
 		Biblioteca.get().initCasosDeTeste();
 		while (true) {
-			Sistema.get().esperarComando();
+			Biblioteca.get().esperarComando();
 		}
 	}
 
 	private Biblioteca() {
-		this.usuarios = new ArrayList<Usuario>();
-		this.livros = new ArrayList<Livro>();
+		   entrada = new Scanner(System.in);
+	        comandos = new HashMap<String, Comando>();
+	        
+//	        /** Inicializa comandos: sai, emp, dev, res, obs, liv, usu, ntf**/
+	        comandos.put("sai", new ComandoSair());
+	        comandos.put("emp", new ComandoFazerEmprestimo());
+	        comandos.put("dev", new ComandoDevolverLivro());
+        comandos.put("res", new ComandoReservarLivro());
+        comandos.put("obs", new ComandoObservar());
+        comandos.put("liv", new ComandoConsultarLivro());
+        comandos.put("usu", new ComandoConsultarUsuario());
+        comandos.put("ntf", new ComandoNotificacao());
 	}
+	
 
-	public static Biblioteca get() {
-		if (instancia == null) {
-			instancia = new Biblioteca();
-		}
-		return instancia;
-	}
+
+public static Biblioteca get(){
+  if(instancia == null){
+      instancia = new Biblioteca();
+  }
+  return instancia;
+}
+
+public Scanner getEntrada(){
+  return this.entrada;
+}
+
+public void exibir(String mensagem) {
+	System.out.println(mensagem);
+}
+  
+public void esperarComando(){
+  System.out.println("Digite o comando:");
+  
+  String comando = entrada.next();
+  System.out.println(comandos.get(comando).executar());
+ 
+}
+	
+	
 	
 
 
