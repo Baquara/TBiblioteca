@@ -22,7 +22,7 @@ public class Regra2 implements RegraEmprestimo {
 }
 }*/
 	public boolean podeEmprestar(Usuario usuario, Livro livro) {
-		return ((livroEstaDisponivel(livro))&&(!usuarioEstaDevedor(usuario))&&(!usuarioTemLimiteDeEmprestimos(usuario))&&(!livroEstaReservado(livro))&&(!usuarioPossuiEmprestimo(usuario,livro)));
+		return ((livroEstaDisponivel(usuario,livro))&&(!usuarioEstaDevedor(usuario,livro))&&(!usuarioTemLimiteDeEmprestimos(usuario,livro))&&(!livroEstaReservado(usuario,livro))&&(!usuarioPossuiEmprestimo(usuario,livro)));
 	}
 		
 	

@@ -94,19 +94,20 @@ public abstract class Usuario {
 		for(int i=0;i<this.emprestimosCorrentes.size();i++) {
 			if(this.emprestimosCorrentes.get(i).getExemplar().getLivro().equals(livro)) {
 				return true;
-				
 			}
-			
 		}
-		
-		
 		return false;
 	}
 		
-		
-		
-		
-
+	public Emprestimo retornaEmprestimo(Livro livro){
+		for(int i=0;i<this.emprestimosCorrentes.size();i++) {
+			if(this.emprestimosCorrentes.get(i).getExemplar().getLivro().equals(livro)) {
+				return this.emprestimosCorrentes.get(i);
+			}
+		}
+		return null;
+	}	
+	
 
 	public ArrayList<Emprestimo> getEmprestimosCorrentes() {
 		return this.emprestimosCorrentes;
@@ -126,7 +127,7 @@ public abstract class Usuario {
 	}
 
 	public boolean podeReservar() {
-		return false;
+		return (this.getReservas().size()<3);
 	}
 
 	public String getCodigo() {

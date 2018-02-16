@@ -2,30 +2,26 @@ import java.util.ArrayList;
 
 public class Fachada {
 	
-	   private ArrayList<Livro> livros = new ArrayList();
-	    private ArrayList<Usuario> usuarios = new ArrayList();
-
+	private ArrayList<Livro> livros = new ArrayList<Livro>();
+	private ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 	private static Fachada instancia;
 
 
-	private static void Fachada() {
+	private Fachada () {
 
 	}
 
 	public static Fachada getInstancia() {
-		return null;
+		return Fachada.instancia;
 	}
 
 	public Usuario getUsuario(String codigo) {
 	for(int i=0;i<this.usuarios.size();i++) {
-			
 			if(this.usuarios.get(i).getCodigo().equals(codigo)) {
 				return this.usuarios.get(i);
 			}
 			
 		}
-		
-		//return null;
 		throw new IllegalArgumentException("O codigo de usuário informado não existe!");
 	}
 
@@ -36,8 +32,6 @@ public class Fachada {
 				return this.livros.get(i);
 			}
 		}
-		
-		//return null;
 		throw new IllegalArgumentException("O codigo de livro informado não existe!");
 	}
 	
@@ -52,44 +46,33 @@ public class Fachada {
 
 	public void cadastrarExemplar(String codigo, Livro livro) {
 		livro.cadastrarExemplar(codigo);
-
 	}
 
 	public void cadastrarFuncionario(String codigo, String nome) {
-		
 		Funcionario funcionario = new Funcionario(codigo,nome);
 		this.usuarios.add(funcionario);
-		
-
 	}
 
 	public void cadastrarAluno(String codigo, String nome) {
-		
-		
 		Aluno aluno = new Aluno(codigo,nome);
 		this.usuarios.add(aluno);
-		
-
 	}
 
 	public void cadastrarProfessor(String codigo, String nome) {
-		
-		
 		Professor professor = new Professor(codigo,nome);
 		this.usuarios.add(professor);
-
 	}
 
-	public void cadastrarObservador(Livro livro, Observer observador) {
-livro.registerObserver(observador);
+	public String cadastrarObservador(Subject subject, Observer observador) {
+		subject.registerObserver(observador);
+		return "O observador foi cadastrado com sucesso.";
 	}
 	
-	public void cadastrarObservador2(String usuario, String livro) {
+	/*public void cadastrarObservador2(String usuario, String livro) {
 		Observer observador = null;
 		Livro liv = null;
 		cadastrarObservador(liv,observador);
-		
-	}
+	}*/
 
 	public String realizarEmprestimo(String codigoUsuario, String codigoLivro) {
 		String mensagem ="";
@@ -143,7 +126,7 @@ livro.registerObserver(observador);
 					usuario.excluirReserva(livro);
 				}
 				usuario.realizarEmprestimo(livro.getExemplarDisponivel());
-				mensagem = "O empréstimo foi realizado com sucesso. Usuario: "+usuario.getNome()+" Livro: "+livro.getTitulo();
+				mensagem = "O empréstimo foi realizado com sucesso. Usuário: "+usuario.getNome()+" Livro: "+livro.getTitulo();
 			}
 		} catch (IllegalArgumentException e) {
 			return (e.getMessage());
@@ -161,8 +144,9 @@ livro.registerObserver(observador);
 		return mensagem;
 	}
 
-	public java.lang.String realizarDevolucao(String codigoUsuario, String codigoLivro) {
-		Usuario usuarioencontrado = getUsuario(codigoUsuario);
+	public String realizarDevolucao(String codigoUsuario, String codigoLivro) {
+		String mensagem ="";
+		/*Usuario usuarioencontrado = getUsuario(codigoUsuario);
 		Livro livroencontrado = getLivro(codigoLivro);
 		Emprestimo emprestimo = null;
 		if(usuarioencontrado!=null) {
@@ -187,11 +171,27 @@ livro.registerObserver(observador);
 				
 			}
 
-		return "Usuario não encontrado";
+		return "Usuario não encontrado";*/
+		
+		try {
+			Usuario usuario = getUsuario(codigoUsuario);
+			Livro livro = getLivro(codigoLivro);
+			if(usuario.possuiEmprestimo(livro)) {
+				Emprestimo emprestimo = usuario.retornaEmprestimo(livro);
+				usuario.realizarDevolucao(emprestimo);
+				mensagem = "A devolução foi realizada com sucesso. Usuário: "+usuario.getNome()+" Livro: "+livro.getTitulo();
+			} else {
+				mensagem = "Não existe empréstimo aberto do livro "+livro.getTitulo()+" para o usuário "+usuario.getNome();
+			}
+		} catch (IllegalArgumentException e) {
+			return (e.getMessage());
+		}
+		return mensagem;
 	}
 
-	public java.lang.String realizarReserva(String codigoUsuario, String codigoLivro) {
-		Usuario usuarioencontrado = getUsuario(codigoUsuario);
+	public String realizarReserva(String codigoUsuario, String codigoLivro) {
+		String mensagem ="";
+		/*Usuario usuarioencontrado = getUsuario(codigoUsuario);
 		Livro livroencontrado = getLivro(codigoLivro);
 		if(usuarioencontrado!=null) {
 			if(livroencontrado!=null) {
@@ -209,10 +209,24 @@ livro.registerObserver(observador);
 			}
 
 	}
-		return "Usuario não encontrado";
+		return "Usuario não encontrado";*/
+		
+		try {
+			Usuario usuario = getUsuario(codigoUsuario);
+			Livro livro = getLivro(codigoLivro);
+			if(usuario.podeReservar()) {
+				usuario.realizarReserva(livro);
+				mensagem = "A reserva do livro "+livro.getTitulo()+" para o usuário "+usuario.getNome()+" foi realizada com sucesso.";
+			} else {
+				mensagem = "A reserva do livro "+livro.getTitulo()+" não pôde ser realizada, pois o usuário "+usuario.getNome()+" já possui o limite de 3 (três) reservas.";
+			}
+		} catch (IllegalArgumentException e) {
+			return (e.getMessage());
+		}
+		return mensagem;
 	}
 
-	public java.lang.String consultarUsuario(String codigoUsuario) {
+	public String consultarUsuario(String codigoUsuario) {
 		Usuario usuarioencontrado = getUsuario(codigoUsuario);
 		
 		if(usuarioencontrado!=null) {
@@ -238,9 +252,7 @@ livro.registerObserver(observador);
 	}
 
 	public String consultarLivro(String codigoLivro) {
-		
-		
-		/*Dado o cÃ³digo de um livro, o sistema deve apresentar suas informaÃ§Ãµes da seguinte
+	/*Dado o cÃ³digo de um livro, o sistema deve apresentar suas informaÃ§Ãµes da seguinte
 forma: (i) tÃ­tulo, (ii) quantidade de reservas para aquele livro, e, se diferente de zero,
 devem ser tambÃ©m apresentados o nome dos usuÃ¡rios que realizaram cada reserva, (iii)
 para cada exemplar, deve ser apresentado seu cÃ³digo, seu status (disponÃ­vel ou
@@ -250,40 +262,64 @@ devoluÃ§Ã£o. Para solicitar tal consulta, o usuÃ¡rio deverÃ¡ digitar o c
 do cÃ³digo do livro.
 		 * 
 		 */
-		Livro livroencontrado = getLivro(codigoLivro);
+		String resultado ="";
+		try {
+			Livro livroencontrado = getLivro(codigoLivro);
+			int quantidadeReservas=livroencontrado.getReservas().size();
+			resultado = "Titulo: "+livroencontrado.getTitulo() + "\n Quantidade de reservas: " + quantidadeReservas+"\n";
+			if(quantidadeReservas!=0) {
+				resultado+="--RESERVAS--\n";
+				for(int i=0;i<livroencontrado.getReservas().size();i++) {
+					Reserva reserva = livroencontrado.getReservas().get(i);
+					resultado+="Usuário: "+reserva.getUsuario().getNome()+"\n";
+				}
+			}
+			resultado+="--EXEMPLARES--\n";
+			for(int i=0;i<livroencontrado.getExemplares().size();i++) {
+				String status = "";
+				String emprestimo="";
+				Exemplar exemplar = livroencontrado.getExemplares().get(i);
+				if (exemplar.getDisponibilidade()) {
+					status = "Disponível";
+					emprestimo="";
+				} else {
+					status = "Emprestado";
+					emprestimo = "Dados do empréstimo:\nUsuário: "+exemplar.getEmprestimo().getUsuario().getNome()+" Data de empréstimo: "+exemplar.getEmprestimo().getDataDeEmprestimo()+" Data prevista da devolução: " + exemplar.getEmprestimo().getDataDeDevolucao()+"\n";
+				}
+				resultado+="Código: "+exemplar.getCodigo()+" Status: "+status+"\n"+emprestimo;
+			}	
+					
+		} catch (IllegalArgumentException e) {
+			return (e.getMessage());
+		}
+		return resultado;
+		
+		/*
 		if(livroencontrado!=null) {
 			int quantidadeReservas=livroencontrado.getReservas().size();
 			
 			
-java.lang.String resultado = livroencontrado.getTitulo() + " " + quantidadeReservas;
+			String resultado = livroencontrado.getTitulo() + " " + quantidadeReservas;
 
-if(quantidadeReservas!=0) {
-
-		String caracteristicas="";
-		
-		for(int i=0;i<livroencontrado.getExemplares().size();i++) {
-			if(livroencontrado.getExemplares().get(i).getDisponibilidade()==true) {
-		 caracteristicas+= livroencontrado.getExemplares().get(i).getCodigo() + "Disponível";
-			}
-			else {
+			if(quantidadeReservas!=0) {
+				String caracteristicas="";
+				for(int i=0;i<livroencontrado.getExemplares().size();i++) {
+					if(livroencontrado.getExemplares().get(i).getDisponibilidade()==true) {
+						caracteristicas+= livroencontrado.getExemplares().get(i).getCodigo() + "Disponível";
+					} else {
 				caracteristicas+= livroencontrado.getExemplares().get(i).getCodigo() + "Emprestado";
 				caracteristicas+= livroencontrado.getExemplares().get(i).getEmprestimo().getUsuario().getNome() +" ";
 				caracteristicas+= livroencontrado.getExemplares().get(i).getEmprestimo().getDataDeEmprestimo() + " ";
 				caracteristicas+= livroencontrado.getExemplares().get(i).getEmprestimo().getDataDeDevolucao() + " ";
-			}
-					
-		}
-	
-	
-	
-resultado+=" " + caracteristicas;
-
-						
 					}
-//System.out.println(resultado);
-return resultado;
+					
+				}
+				resultado+=" " + caracteristicas;
 			}
-		return "Livro não encontrado";
+			//System.out.println(resultado);
+			return resultado;
+		}
+		return "Livro não encontrado";*/
 	}
 
 	
