@@ -57,10 +57,56 @@ public abstract class Usuario {
 		livro.cadastrarReserva(novaReserva);
 	}
 
-	public void excluirReserva(Reserva reserva) {	
-		this.reservas.remove(reserva);
-		reserva.getLivro().excluirReserva(reserva);
+	public void excluirReserva(Livro livro) {
+		/*Preciso que ele receba um livro, procure a reserva no ArrayList reservas e depois 
+		 * remova a reserva do ArrayList. Não precisa conferir se a reserva existe.; 
+		 * */
+		for(int i=0;i<this.reservas.size();i++) {
+			if(this.reservas.get(i).getLivro()==livro) {
+				this.reservas.remove(this.reservas.get(i));
+				
+			}
+			
+			
+		}
 	}
+	
+	public boolean possuiReserva(Livro livro){
+/*Obs.: recebe um livro e verifica se o usuario possui 
+* reserva desse livro (tem que percorrer o ArrayList reservas), retorna true ou false.*/
+		for(int i=0;i<this.reservas.size();i++) {
+			if(this.reservas.get(i).getUsuario().getNome().equals(this.nome)) {
+				return true;
+				
+			}
+			
+			
+		}
+		
+		return false;
+		
+	}
+	
+	public boolean possuiEmprestimo(Livro livro){
+		/*Obs.: Recebe um livro e verifica se o usuário possui emprestimo para 
+		 * esse livro, retorna true ou false (tem que percorrer o ArrayList emprestimosCorrentes).*/
+		 
+		for(int i=0;i<this.emprestimosCorrentes.size();i++) {
+			if(this.emprestimosCorrentes.get(i).getExemplar().getLivro().equals(livro)) {
+				return true;
+				
+			}
+			
+		}
+		
+		
+		return false;
+	}
+		
+		
+		
+		
+
 
 	public ArrayList<Emprestimo> getEmprestimosCorrentes() {
 		return this.emprestimosCorrentes;

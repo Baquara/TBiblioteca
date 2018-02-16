@@ -72,6 +72,44 @@ public class Livro implements Subject {
 		this.reservas.remove(reserva);
 	}
 	
-
+	public Exemplar getExemplarDisponivel(){
+		/*Obs.: percorre o ArrayList exemplares e retorna um exemplar disponível.*/
+		for(int i=0;i<this.exemplares.size();i++) {
+			if(this.exemplares.get(i).getDisponibilidade()==true)
+			return this.exemplares.get(i);
+			
+		}
+		return null;
+	}
+	
+	public boolean estaDisponivel(){
+		/*Obs.: Verifica se algum exemplar está 
+		* disponível (tem que percorrer o ArrayList exemplares), 
+		* retorna true ou false.*/
+		for(int i=0;i<this.exemplares.size();i++) {
+			if(this.exemplares.get(i).getDisponibilidade()==true)
+				return true;
+			
+		}
+		
+		return false;
+	}
+	
+	
+	public int getExemplaresDisponiveis(){
+/*Obs.: Vai contar a quantidade de exemplares disponíveis 
+* e retornar esse número (tem que percorrer o ArrayList exemplares).*/
+		int numerodex=0;
+		for(int i=0;i<this.exemplares.size();i++) {
+			if(this.exemplares.get(i).getDisponibilidade()==true)
+				numerodex++;
+			
+		}
+		
+		return numerodex;
+	}
+	
+	
+	
 
 }
