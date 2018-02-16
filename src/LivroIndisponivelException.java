@@ -1,5 +1,5 @@
 
-public class LivroIndisponivelException extends Exception {
+public class LivroIndisponivelException extends RuntimeException {
 	LivroIndisponivelException(String message){
 		super(message);
 	}

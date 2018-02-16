@@ -1,5 +1,5 @@
 
-public class ConflitoDeEmprestimoException extends Exception {
+public class ConflitoDeEmprestimoException extends RuntimeException {
 	ConflitoDeEmprestimoException(String message){
 		super(message);
 	}

@@ -45,8 +45,8 @@ public class Fachada {
 		return this.livros;
 	}
 
-	public void cadastrarLivro(String codigo, String titulo, String editora, String autores, String edição, String anoDePublicação) {
-		Livro livro = new Livro(codigo,titulo,editora,autores,edição,anoDePublicação);
+	public void cadastrarLivro(String codigo, String titulo, String editora, String autores, String edicao, String anoDePublicacao) {
+		Livro livro = new Livro(codigo,titulo,editora,autores,edicao,anoDePublicacao);
 		this.livros.add(livro);
 	}
 
@@ -91,7 +91,8 @@ livro.registerObserver(observador);
 		
 	}
 
-	public java.lang.String realizarEmprestimo(String codigoUsuario, String codigoLivro) {
+	public String realizarEmprestimo(String codigoUsuario, String codigoLivro) {
+		String mensagem ="";
 		/*Usuario usuarioencontrado = getUsuario(codigoUsuario);
 		Livro livroencontrado = getLivro(codigoLivro);
 		Exemplar exemplar=null;
@@ -128,11 +129,11 @@ livro.registerObserver(observador);
 					}
 			else {
 				
-				return "Livro não encontrado";
+				return "Livro nÃ£o encontrado";
 			}
 
 	}
-		return "Usuario não encontrado";*/
+		return "Usuario nÃ£o encontrado";*/
 		
 		try {
 			Usuario usuario = getUsuario(codigoUsuario);
@@ -142,7 +143,7 @@ livro.registerObserver(observador);
 					usuario.excluirReserva(livro);
 				}
 				usuario.realizarEmprestimo(livro.getExemplarDisponivel());
-				return ("");
+				mensagem = "O empréstimo foi realizado com sucesso. Usuario: "+usuario.getNome()+" Livro: "+livro.getTitulo();
 			}
 		} catch (IllegalArgumentException e) {
 			return (e.getMessage());
@@ -157,7 +158,7 @@ livro.registerObserver(observador);
 		} catch (ConflitoDeEmprestimoException e) {
 			return (e.getMessage());
 		}
-		
+		return mensagem;
 	}
 
 	public java.lang.String realizarDevolucao(String codigoUsuario, String codigoLivro) {
@@ -177,7 +178,7 @@ livro.registerObserver(observador);
 					
 				}
 						
-							return "Devolucao realizada com sucesso";
+							return "Devolução realizada com sucesso";
 						}
 }
  else {
@@ -239,14 +240,14 @@ livro.registerObserver(observador);
 	public String consultarLivro(String codigoLivro) {
 		
 		
-		/*Dado o código de um livro, o sistema deve apresentar suas informações da seguinte
-forma: (i) título, (ii) quantidade de reservas para aquele livro, e, se diferente de zero,
-devem ser também apresentados o nome dos usuários que realizaram cada reserva, (iii)
-para cada exemplar, deve ser apresentado seu código, seu status (disponível ou
-emprestado), e em caso do exemplar estar emprestado deverá ser exibido o nome do
-usuário que realizou o empréstimo, a data de empréstimo e a data prevista para
-devolução. Para solicitar tal consulta, o usuário deverá digitar o comando “liv”, seguido
-do código do livro.
+		/*Dado o cÃ³digo de um livro, o sistema deve apresentar suas informaÃ§Ãµes da seguinte
+forma: (i) tÃ­tulo, (ii) quantidade de reservas para aquele livro, e, se diferente de zero,
+devem ser tambÃ©m apresentados o nome dos usuÃ¡rios que realizaram cada reserva, (iii)
+para cada exemplar, deve ser apresentado seu cÃ³digo, seu status (disponÃ­vel ou
+emprestado), e em caso do exemplar estar emprestado deverÃ¡ ser exibido o nome do
+usuÃ¡rio que realizou o emprÃ©stimo, a data de emprÃ©stimo e a data prevista para
+devoluÃ§Ã£o. Para solicitar tal consulta, o usuÃ¡rio deverÃ¡ digitar o comando â€œlivâ€�, seguido
+do cÃ³digo do livro.
 		 * 
 		 */
 		Livro livroencontrado = getLivro(codigoLivro);
@@ -292,9 +293,9 @@ return resultado;
 	
 	public String consultarProfessor(String CodigoProfessor) {
 		/*Dado um professor, o sistema deve retornar a quantidade de vezes que ele foi notificado
-sobre mais de duas reservas simultâneas em livros observados por ele. Para solicitar tal
-consulta, o usuário deverá digitar o comando “ntf”, seguido do código do usuário. Não há
-necessidade de checar se o código se refere realmente a um professor.
+sobre mais de duas reservas simultÃ¢neas em livros observados por ele. Para solicitar tal
+consulta, o usuÃ¡rio deverÃ¡ digitar o comando â€œntfâ€�, seguido do cÃ³digo do usuÃ¡rio. NÃ£o hÃ¡
+necessidade de checar se o cÃ³digo se refere realmente a um professor.
 		 * 
 		 */
 		
