@@ -7,7 +7,7 @@ public class Regra1 implements RegraEmprestimo {
 	
 	private boolean livroEstaDisponivel(Livro livro) {
 		if (!livro.estaDisponivel()) {
-			throw new livroIndisponivelException("O emprÈstimo n„o pÙde ser realizado. O livro informado n„o possui exemplar disponÌvel. Usuario: "+usuario.getNome()+" Livro: "+livro.getTitulo());
+			throw new livroIndisponivelException("O empr√©stimo n√£o p√¥de ser realizado. O livro informado n√£o possui exemplar dispon√≠vel. Usuario: "+usuario.getNome()+" Livro: "+livro.getTitulo());
 		} else {
 			return true;
 		}
@@ -15,7 +15,7 @@ public class Regra1 implements RegraEmprestimo {
 	
 	private boolean usuarioPossuiEmprestimo(Usuario usuario, Livro livro) {
 		if (usuario.possuiEmprestimo(livro)) {
-			throw new conflitoDeEmprestimoException("O emprÈstimo n„o pÙde ser realizado. O usu·rio j· possui emprÈstimo de um exemplar do livro informado. Usuario: "+usuario.getNome()+" Livro: "+livro.getTitulo());
+			throw new conflitoDeEmprestimoException("O empr√©stimo n√£o p√¥de ser realizado. O usu√°rio j√° possui empr√©stimo de um exemplar do livro informado. Usuario: "+usuario.getNome()+" Livro: "+livro.getTitulo());
 		} else {
 			return false;
 		}
