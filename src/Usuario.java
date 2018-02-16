@@ -75,8 +75,8 @@ public abstract class Usuario {
 	}
 	
 
-	public boolean podeEmprestar() {
-		return false;
+	public boolean podeEmprestar(Livro livro) {
+		return regra.podeEmprestar(this, livro);
 	}
 
 	public boolean podeReservar() {

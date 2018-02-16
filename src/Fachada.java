@@ -25,28 +25,24 @@ public class Fachada {
 			
 		}
 		
-		return null;
+		//return null;
+		throw new IllegalArgumentException("O codigo de usuário informado não existe!");
 	}
 
 	public Livro getLivro(String codigo) {
-for(int i=0;i<this.livros.size();i++) {
-
-			
+		for(int i=0;i<this.livros.size();i++) {
 			if(this.livros.get(i).getCodigo().equals(codigo)) {
 				//System.out.println("chegou aqui");
 				return this.livros.get(i);
 			}
-			
 		}
 		
-		return null;
+		//return null;
+		throw new IllegalArgumentException("O codigo de livro informado não existe!");
 	}
 	
 	public ArrayList<Livro> RetornaLivros(){
-			
-	return this.livros;
-	
-	
+		return this.livros;
 	}
 
 	public void cadastrarLivro(String codigo, String titulo, String editora, String autores, String edição, String anoDePublicação) {
@@ -96,7 +92,7 @@ livro.registerObserver(observador);
 	}
 
 	public java.lang.String realizarEmprestimo(String codigoUsuario, String codigoLivro) {
-		Usuario usuarioencontrado = getUsuario(codigoUsuario);
+		/*Usuario usuarioencontrado = getUsuario(codigoUsuario);
 		Livro livroencontrado = getLivro(codigoLivro);
 		Exemplar exemplar=null;
 		//System.out.println(codigoUsuario + " " + codigoLivro);
@@ -136,7 +132,32 @@ livro.registerObserver(observador);
 			}
 
 	}
-		return "Usuario não encontrado";
+		return "Usuario não encontrado";*/
+		
+		try {
+			Usuario usuario = getUsuario(codigoUsuario);
+			Livro livro = getLivro(codigoLivro);
+			if(usuario.podeEmprestar(livro)) {
+				if (usuario.possuiReserva(livro)) {
+					usuario.excluirReserva(livro);
+				}
+				usuario.realizarEmprestimo(livro.getExemplarDisponivel());
+				return ("");
+			}
+		} catch (IllegalArgumentException e) {
+			return (e.getMessage());
+		} catch (LivroIndisponivelException e) {
+			return (e.getMessage());
+		} catch (UsuarioDevedorException e) {
+			return (e.getMessage());
+		} catch (LimiteDeEmprestimosException e) {
+			return (e.getMessage());
+		} catch (LivroReservadoException e) {
+			return (e.getMessage());
+		} catch (ConflitoDeEmprestimoException e) {
+			return (e.getMessage());
+		}
+		
 	}
 
 	public java.lang.String realizarDevolucao(String codigoUsuario, String codigoLivro) {
