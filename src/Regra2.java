@@ -1,26 +1,5 @@
 public class Regra2 implements RegraEmprestimo {
-	/*if (!livro.estaDisponivel()) {
-	throw new livroIndisponivelException();
-} else {
-	if (usuario.estaDevedor()) {
-		throw new usuarioDevedorException();
-	}else {
-		if (usuario.getEmprestimosCorrentes().size()==usuario.getLimiteDeEmprestimos()) {
-			throw new limiteDeEmprestimosException();
-		}else {
-			if ((livro.getReservas().size()>=livro.getExemplaresDisponiveis()) && (!usuario.possuiReserva(livro))) {
-					throw new livroReservadoException();
-				} else {
-					if (usuario.possuiEmprestimo(livro)) {
-						throw new conflitoDeEmprestimoException();
-					} else {
-						return true;
-					}
-			}
-		}
-	}
-}
-}*/
+
 	public boolean podeEmprestar(Usuario usuario, Livro livro) {
 		return ((livroEstaDisponivel(usuario,livro))&&(!usuarioEstaDevedor(usuario,livro))&&(!usuarioTemLimiteDeEmprestimos(usuario,livro))&&(!livroEstaReservado(usuario,livro))&&(!usuarioPossuiEmprestimo(usuario,livro)));
 	}

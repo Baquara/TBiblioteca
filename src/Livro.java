@@ -1,10 +1,9 @@
 import java.util.*;
 
-public class Livro implements Subject {
+public class Livro extends Subject {
 		
     private ArrayList<Exemplar> exemplares = new ArrayList<Exemplar>();
     private ArrayList<Reserva> reservas = new ArrayList<Reserva>();
-    private ArrayList<Observer> observers = new ArrayList<Observer>();
 	private String codigo;
 	private String titulo;
 	private String editora;
@@ -19,24 +18,6 @@ public class Livro implements Subject {
 		this.autores=autores;
 		this.edicao=edicao;
 		this.anoDePublicacao=anoDePublicacao;
-	}
-
-	public void registerObserver(Observer observer) {
-		this.observers.add(observer);
-	}
-
-	public void removeObserver(Observer observer) {
-		int i = this.observers.indexOf(observer);
-		if (i >= 0) {
-			this.observers.remove(i);
-		}
-	}
-
-	public void notifyObservers() {
-		for (int i = 0; i < this.observers.size(); i++) {
-			Observer observer = this.observers.get(i);
-			observer.update();
-		}
 	}
 
 	public void cadastrarExemplar(String codigo) {
@@ -63,42 +44,38 @@ public class Livro implements Subject {
 
 	public void cadastrarReserva(Reserva reserva) {
 		this.reservas.add(reserva);
-		if(this.reservas.size()>=2) {
+		if(this.reservas.size()>2) {
 			this.notifyObservers();
 			}	
 	}
 
-	public void excluirReserva(Reserva reserva) {
-		this.reservas.remove(reserva);
+	public void excluirReserva(Usuario usuario) {
+		for (Reserva reserva:reservas) {
+			if(reserva.getUsuario().equals(usuario)) {
+				this.reservas.remove(reserva);
+			}
+		}
+		
 	}
 	
 	public Exemplar getExemplarDisponivel(){
-		/*Obs.: percorre o ArrayList exemplares e retorna um exemplar disponível.*/
 		for(int i=0;i<this.exemplares.size();i++) {
 			if(this.exemplares.get(i).getDisponibilidade()==true)
 			return this.exemplares.get(i);
-			
 		}
 		return null;
 	}
 	
 	public boolean estaDisponivel(){
-		/*Obs.: Verifica se algum exemplar está 
-		* disponível (tem que percorrer o ArrayList exemplares), 
-		* retorna true ou false.*/
 		for(int i=0;i<this.exemplares.size();i++) {
 			if(this.exemplares.get(i).getDisponibilidade()==true)
 				return true;
-			
-		}
-		
+			}
 		return false;
 	}
 	
 	
 	public int getExemplaresDisponiveis(){
-/*Obs.: Vai contar a quantidade de exemplares disponíveis 
-* e retornar esse número (tem que percorrer o ArrayList exemplares).*/
 		int numerodex=0;
 		for(int i=0;i<this.exemplares.size();i++) {
 			if(this.exemplares.get(i).getDisponibilidade()==true)
@@ -107,9 +84,5 @@ public class Livro implements Subject {
 		}
 		
 		return numerodex;
-	}
-	
-	
-	
-
+	}		
 }

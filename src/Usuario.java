@@ -1,7 +1,6 @@
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 public abstract class Usuario {
 	
@@ -40,12 +39,6 @@ public abstract class Usuario {
 	public void realizarDevolucao(Emprestimo emprestimo) {
 		Exemplar exemplar = emprestimo.getExemplar();
 		exemplar.realizarDevolucao();
-		/*for(int i=0;i<this.emprestimosCorrentes.size();i++) {
-			
-			if(this.emprestimosCorrentes.get(i).getExemplar()==exemplar) {
-				this.emprestimosCorrentes.remove(i);
-				break;
-			}*/
 		emprestimo.realizarDevolucao();
 		this.emprestimosCorrentes.remove(emprestimo);
 		this.emprestimosPassados.add(emprestimo);
@@ -58,9 +51,6 @@ public abstract class Usuario {
 	}
 
 	public void excluirReserva(Livro livro) {
-		/*Preciso que ele receba um livro, procure a reserva no ArrayList reservas e depois 
-		 * remova a reserva do ArrayList. Não precisa conferir se a reserva existe.; 
-		 * */
 		for(int i=0;i<this.reservas.size();i++) {
 			if(this.reservas.get(i).getLivro()==livro) {
 				this.reservas.remove(this.reservas.get(i));
@@ -72,8 +62,6 @@ public abstract class Usuario {
 	}
 	
 	public boolean possuiReserva(Livro livro){
-/*Obs.: recebe um livro e verifica se o usuario possui 
-* reserva desse livro (tem que percorrer o ArrayList reservas), retorna true ou false.*/
 		for(int i=0;i<this.reservas.size();i++) {
 			if(this.reservas.get(i).getUsuario().getNome().equals(this.nome)) {
 				return true;
@@ -88,10 +76,7 @@ public abstract class Usuario {
 	}
 	
 	public boolean possuiEmprestimo(Livro livro){
-		/*Obs.: Recebe um livro e verifica se o usuário possui emprestimo para 
-		 * esse livro, retorna true ou false (tem que percorrer o ArrayList emprestimosCorrentes).*/
-		 
-		for(int i=0;i<this.emprestimosCorrentes.size();i++) {
+ 		for(int i=0;i<this.emprestimosCorrentes.size();i++) {
 			if(this.emprestimosCorrentes.get(i).getExemplar().getLivro().equals(livro)) {
 				return true;
 			}
@@ -139,7 +124,5 @@ public abstract class Usuario {
 	}
 	public abstract int getTempoDeEmprestimo();
 	public abstract int getLimiteDeEmprestimos();
-
 	
-
 }

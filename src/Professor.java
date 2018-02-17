@@ -22,9 +22,8 @@ public class Professor extends Usuario implements Observer {
 		return this.qtdNotificacoes;
 	}
 
-	public void update() {
-		this.qtdNotificacoes++;
-
-	}
+    public void atualizar(Subject s){
+        this.qtdNotificacoes++;
+    }
 
 }

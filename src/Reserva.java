@@ -23,8 +23,8 @@ public class Reserva {
 		return this.livro;
 	}
 	
-	public String getNome() {
-		return this.livro.getTitulo();
+	public Date getDataDeRealização() {
+		return this.dataDeRealizacao;
 	}
 	
 }

@@ -33,19 +33,9 @@ public class Exemplar {
 		return this.estaDisponivel;
 	}
 
-	public void setDisponibilidade(boolean estaDisponivel) {
 		
-		this.estaDisponivel=estaDisponivel;
-
-	}
-	
 	public Livro getLivro() {
 		return this.livro;
-		
-	}
-
-	public void excluirEmprestimo() {
-
 	}
 
 }

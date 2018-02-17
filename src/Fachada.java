@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+import java.text.*;
+import java.util.*;
 
 public class Fachada {
 	
@@ -6,12 +7,12 @@ public class Fachada {
 	private ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 	private static Fachada instancia;
 
-
-	private Fachada () {
-
-	}
-
+	private Fachada() {}
+	
 	public static Fachada getInstancia() {
+		if(instancia==null) {
+			instancia=new Fachada();
+		}
 		return Fachada.instancia;
 	}
 
@@ -28,7 +29,6 @@ public class Fachada {
 	public Livro getLivro(String codigo) {
 		for(int i=0;i<this.livros.size();i++) {
 			if(this.livros.get(i).getCodigo().equals(codigo)) {
-				//System.out.println("chegou aqui");
 				return this.livros.get(i);
 			}
 		}
@@ -63,67 +63,30 @@ public class Fachada {
 		this.usuarios.add(professor);
 	}
 
-	public String cadastrarObservador(Subject subject, Observer observador) {
-		subject.registerObserver(observador);
-		return "O observador foi cadastrado com sucesso.";
+	public String cadastrarObservador(String codigoUsuario, String codigoLivro) {
+		String mensagem="O observador não foi cadastrado.";
+		try {
+			Observer observer = (Observer)getUsuario(codigoUsuario);
+			Subject subject= (Subject)getLivro(codigoLivro);
+			subject.registerObserver(observer);
+			mensagem= "O observador foi cadastrado com sucesso.";
+			
+		} catch (IllegalArgumentException e) {
+			return (e.getMessage());
+		}
+		return mensagem;
 	}
-	
-	/*public void cadastrarObservador2(String usuario, String livro) {
-		Observer observador = null;
-		Livro liv = null;
-		cadastrarObservador(liv,observador);
-	}*/
+
 
 	public String realizarEmprestimo(String codigoUsuario, String codigoLivro) {
 		String mensagem ="";
-		/*Usuario usuarioencontrado = getUsuario(codigoUsuario);
-		Livro livroencontrado = getLivro(codigoLivro);
-		Exemplar exemplar=null;
-		//System.out.println(codigoUsuario + " " + codigoLivro);
-		
-		if(usuarioencontrado!=null) {
-			if(livroencontrado!=null) {
-						
-						if(usuarioencontrado.podeEmprestar()==true) {
-							
-							
-							for(int i=0;i<livroencontrado.getExemplares().size();i++) {
-						if(livroencontrado.getExemplares().get(i).getDisponibilidade()==true) {
-							 exemplar = livroencontrado.getExemplares().get(i);
-						break;
-						}
-							}
-								
-							if(exemplar.getDisponibilidade()==true)
-							usuarioencontrado.realizarEmprestimo(exemplar);
-							ArrayList<Reserva> reservas = usuarioencontrado.getReservas();
-							Reserva reserva=null;
-							for(int i=0;i<reservas.size();i++) {
-								if(reservas.get(i).getUsuario()==usuarioencontrado && reservas.get(i).getLivro()==livroencontrado)
-								reserva=reservas.get(i);
-								
-							};
-							if(reserva!=null) {
-							usuarioencontrado.excluirReserva(reserva);
-							livroencontrado.excluirReserva(reserva);
-							}
-							return "Emprestimo realizado com sucesso";
-						}
-					}
-			else {
-				
-				return "Livro nÃ£o encontrado";
-			}
-
-	}
-		return "Usuario nÃ£o encontrado";*/
-		
 		try {
 			Usuario usuario = getUsuario(codigoUsuario);
 			Livro livro = getLivro(codigoLivro);
 			if(usuario.podeEmprestar(livro)) {
 				if (usuario.possuiReserva(livro)) {
 					usuario.excluirReserva(livro);
+					livro.excluirReserva(usuario);
 				}
 				usuario.realizarEmprestimo(livro.getExemplarDisponivel());
 				mensagem = "O empréstimo foi realizado com sucesso. Usuário: "+usuario.getNome()+" Livro: "+livro.getTitulo();
@@ -146,33 +109,6 @@ public class Fachada {
 
 	public String realizarDevolucao(String codigoUsuario, String codigoLivro) {
 		String mensagem ="";
-		/*Usuario usuarioencontrado = getUsuario(codigoUsuario);
-		Livro livroencontrado = getLivro(codigoLivro);
-		Emprestimo emprestimo = null;
-		if(usuarioencontrado!=null) {
-			if(livroencontrado!=null) {
-				for(int i=0;i<usuarioencontrado.getEmprestimosCorrentes().size();i++) {
-					if(usuarioencontrado.getEmprestimosCorrentes().get(i).getExemplar().getLivro()==livroencontrado)
-					{
-						emprestimo=usuarioencontrado.getEmprestimosCorrentes().get(i);
-						usuarioencontrado.realizarDevolucao(emprestimo);
-						break;
-					}
-					
-					
-				}
-						
-							return "Devolução realizada com sucesso";
-						}
-}
- else {
-				
-				return "Livro não encontrado";
-				
-			}
-
-		return "Usuario não encontrado";*/
-		
 		try {
 			Usuario usuario = getUsuario(codigoUsuario);
 			Livro livro = getLivro(codigoLivro);
@@ -191,26 +127,6 @@ public class Fachada {
 
 	public String realizarReserva(String codigoUsuario, String codigoLivro) {
 		String mensagem ="";
-		/*Usuario usuarioencontrado = getUsuario(codigoUsuario);
-		Livro livroencontrado = getLivro(codigoLivro);
-		if(usuarioencontrado!=null) {
-			if(livroencontrado!=null) {
-						
-						if(usuarioencontrado.estaDevedor()==false) {
-							//fazer tentativa de emprestimo
-							if(usuarioencontrado.podeReservar()==true)
-							usuarioencontrado.realizarReserva(livroencontrado);
-							return "Reserva realizada com sucesso";
-						}
-					}
-			else {
-				
-				return "Livro não encontrado";
-			}
-
-	}
-		return "Usuario não encontrado";*/
-		
 		try {
 			Usuario usuario = getUsuario(codigoUsuario);
 			Livro livro = getLivro(codigoLivro);
@@ -226,42 +142,50 @@ public class Fachada {
 		return mensagem;
 	}
 
-	public String consultarUsuario(String codigoUsuario) {
-		Usuario usuarioencontrado = getUsuario(codigoUsuario);
 		
-		if(usuarioencontrado!=null) {
-			
-
-				String reservastring="";
-
-			for(int i=0;i< usuarioencontrado.getReservas().size();i++) {
-					
-						reservastring+= usuarioencontrado.getReservas().get(i).getNome() + " ";
-					
-					
+	public String consultarUsuario(String codigoUsuario) {
+		String resultado ="";
+		try {
+			Usuario usuarioencontrado = getUsuario(codigoUsuario);
+			resultado+="Usuário: "+usuarioencontrado.getNome()+"\n";
+			if (usuarioencontrado.getEmprestimosCorrentes().size()>0) {
+				resultado+="--EMPRESTIMOS CORRENTES--\n";
+				for (Emprestimo emprestimo : usuarioencontrado.getEmprestimosCorrentes()) {
+					DateFormat formataData = new SimpleDateFormat("dd/MM/yyyy");
+					String dataEmprestimo = formataData.format(emprestimo.getDataDeEmprestimo());
+					String dataDevolucao = formataData.format(emprestimo.getDataDeDevolucao());
+					String titulo=emprestimo.getExemplar().getLivro().getTitulo();
+					resultado+="Título: "+titulo+" -Data do empréstimo: "+dataEmprestimo+" -Data de devolução prevista: "+dataDevolucao+"\n";
+				} 
+			}else { resultado+="O usuário não possui empréstimos correntes.\n";}
+			if (usuarioencontrado.getEmprestimosPassados().size()>0) {
+				resultado+="--EMPRESTIMOS PASSADOS--\n";
+				for (Emprestimo emprestimo : usuarioencontrado.getEmprestimosPassados()) {
+					DateFormat formataData = new SimpleDateFormat("dd/MM/yyyy");
+					String dataEmprestimo = formataData.format(emprestimo.getDataDeEmprestimo());
+					String dataDevolucao = formataData.format(emprestimo.getDataDeDevolucao());
+					String titulo=emprestimo.getExemplar().getLivro().getTitulo();
+					resultado+="Título: "+titulo+" -Data do empréstimo: "+dataEmprestimo+" -Data de devolução: "+dataDevolucao+"\n";
 				}
-			
-							java.lang.String resultado = usuarioencontrado.getNome() + " " 
-							+ usuarioencontrado.getCodigo() +" "+ usuarioencontrado.getEmprestimosCorrentes() + 
-							" " + usuarioencontrado.getEmprestimosPassados() + " " + reservastring + " " + usuarioencontrado.estaDevedor();
-							return resultado;
-						
-					}
-
-		return "Usuario não encontrado";
+			}else { resultado+="O usuário não possui empréstimos passados.\n";}
+			if (usuarioencontrado.getReservas().size()>0) {
+				resultado+="--RESERVAS--\n";
+				for (Reserva reserva : usuarioencontrado.getReservas()) {
+					DateFormat formataData = new SimpleDateFormat("dd/MM/yyyy");
+					String data = formataData.format(reserva.getDataDeRealização());
+					String titulo=reserva.getLivro().getTitulo();
+					resultado+="Título: "+titulo+" -Data de solicitação: "+data+"\n";
+				}
+				
+			} else { resultado+="O usuário não possui reservas.\n";}				
+		} catch (IllegalArgumentException e) {
+			return (e.getMessage());
+		}
+		return resultado;
+		
 	}
 
 	public String consultarLivro(String codigoLivro) {
-	/*Dado o cÃ³digo de um livro, o sistema deve apresentar suas informaÃ§Ãµes da seguinte
-forma: (i) tÃ­tulo, (ii) quantidade de reservas para aquele livro, e, se diferente de zero,
-devem ser tambÃ©m apresentados o nome dos usuÃ¡rios que realizaram cada reserva, (iii)
-para cada exemplar, deve ser apresentado seu cÃ³digo, seu status (disponÃ­vel ou
-emprestado), e em caso do exemplar estar emprestado deverÃ¡ ser exibido o nome do
-usuÃ¡rio que realizou o emprÃ©stimo, a data de emprÃ©stimo e a data prevista para
-devoluÃ§Ã£o. Para solicitar tal consulta, o usuÃ¡rio deverÃ¡ digitar o comando â€œlivâ€�, seguido
-do cÃ³digo do livro.
-		 * 
-		 */
 		String resultado ="";
 		try {
 			Livro livroencontrado = getLivro(codigoLivro);
@@ -284,67 +208,22 @@ do cÃ³digo do livro.
 					emprestimo="";
 				} else {
 					status = "Emprestado";
-					emprestimo = "Dados do empréstimo:\nUsuário: "+exemplar.getEmprestimo().getUsuario().getNome()+" Data de empréstimo: "+exemplar.getEmprestimo().getDataDeEmprestimo()+" Data prevista da devolução: " + exemplar.getEmprestimo().getDataDeDevolucao()+"\n";
+					DateFormat formataData = new SimpleDateFormat("dd/MM/yyyy");
+					String dataEmprestimo = formataData.format(exemplar.getEmprestimo().getDataDeEmprestimo());
+					String dataDevolucao = formataData.format(exemplar.getEmprestimo().getDataDeDevolucao());
+					emprestimo = "      Dados do empréstimo:  -Usuário: "+exemplar.getEmprestimo().getUsuario().getNome()+" -Data de empréstimo: "+dataEmprestimo+" -Data prevista da devolução: " + dataDevolucao+"\n";
 				}
-				resultado+="Código: "+exemplar.getCodigo()+" Status: "+status+"\n"+emprestimo;
+				resultado+="Código: "+exemplar.getCodigo()+" Status: "+status+"\n"+emprestimo+"\n";
 			}	
 					
 		} catch (IllegalArgumentException e) {
 			return (e.getMessage());
 		}
-		return resultado;
-		
-		/*
-		if(livroencontrado!=null) {
-			int quantidadeReservas=livroencontrado.getReservas().size();
-			
-			
-			String resultado = livroencontrado.getTitulo() + " " + quantidadeReservas;
-
-			if(quantidadeReservas!=0) {
-				String caracteristicas="";
-				for(int i=0;i<livroencontrado.getExemplares().size();i++) {
-					if(livroencontrado.getExemplares().get(i).getDisponibilidade()==true) {
-						caracteristicas+= livroencontrado.getExemplares().get(i).getCodigo() + "Disponível";
-					} else {
-				caracteristicas+= livroencontrado.getExemplares().get(i).getCodigo() + "Emprestado";
-				caracteristicas+= livroencontrado.getExemplares().get(i).getEmprestimo().getUsuario().getNome() +" ";
-				caracteristicas+= livroencontrado.getExemplares().get(i).getEmprestimo().getDataDeEmprestimo() + " ";
-				caracteristicas+= livroencontrado.getExemplares().get(i).getEmprestimo().getDataDeDevolucao() + " ";
-					}
-					
-				}
-				resultado+=" " + caracteristicas;
-			}
-			//System.out.println(resultado);
-			return resultado;
-		}
-		return "Livro não encontrado";*/
+		return resultado;		
 	}
 
-	
-	
-	
-	
-	
 	public String consultarProfessor(String CodigoProfessor) {
-		/*Dado um professor, o sistema deve retornar a quantidade de vezes que ele foi notificado
-sobre mais de duas reservas simultÃ¢neas em livros observados por ele. Para solicitar tal
-consulta, o usuÃ¡rio deverÃ¡ digitar o comando â€œntfâ€�, seguido do cÃ³digo do usuÃ¡rio. NÃ£o hÃ¡
-necessidade de checar se o cÃ³digo se refere realmente a um professor.
-		 * 
-		 */
-		
 		Professor professor = (Professor) getUsuario(CodigoProfessor);
-		
-		
-		return "O professor " + professor.getNome() + "foi notificado" + professor.getNotificacoes() + " vezes";
-		
-
+		return "O professor " + professor.getNome() + " foi notificado " + professor.getNotificacoes() + " vezes.";
 	}
-	
-
-
-
-
 }
